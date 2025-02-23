@@ -14,11 +14,10 @@ object ClassPathResourceLoader {
 
     fun getResourceText(location: String): String {
         return resourceTextCache.get(location) {
-            ClassPathResourceLoader::class.java.classLoader
-                .getResourceAsStream(location)
-                ?.bufferedReader()
-                ?.use(Reader::readText)
+            val inputStream = ClassPathResourceLoader::class.java.classLoader.getResourceAsStream(location)
                 ?: throw IllegalArgumentException("Resource not found: $location")
+
+            inputStream.bufferedReader().use(Reader::readText)
         }
     }
 }

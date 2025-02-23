@@ -1,6 +1,8 @@
 package kiss.utils
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import org.junit.jupiter.api.Test
 
 class ClassPathResourceLoaderTest {
@@ -25,5 +27,14 @@ class ClassPathResourceLoaderTest {
                 </html>
             """.trimIndent()
             )
+    }
+
+    @Test
+    fun `Should throw exception when resource not found`() {
+        val notFoundResourceLocation = "templates/mail/not-found.html"
+
+        shouldThrow<IllegalArgumentException> {
+            ClassPathResourceLoader.getResourceText(notFoundResourceLocation)
+        }.message.shouldContain(notFoundResourceLocation)
     }
 }
