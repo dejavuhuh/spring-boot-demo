@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.1.10"
     kotlin("plugin.spring") version "2.1.10"
+    id("com.google.devtools.ksp") version "2.1.10+"
     id("org.springframework.boot") version "3.4.3"
     id("io.spring.dependency-management") version "1.1.7"
     jacoco
@@ -26,11 +27,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly("io.micrometer:micrometer-registry-otlp")
     runtimeOnly("io.micrometer:micrometer-tracing-bridge-otel")
     runtimeOnly("io.opentelemetry:opentelemetry-exporter-otlp")
     implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
-
 
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -39,7 +40,14 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("org.postgresql:postgresql")
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:0.9.58")
+    ksp("org.babyfish.jimmer:jimmer-ksp:0.9.58")
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
+    implementation("org.redisson:redisson-spring-boot-starter:3.44.0")
+//    implementation("com.aliyun:dysmsapi20170525:3.1.1")
+
+    implementation("com.bucket4j:bucket4j_jdk17-redis:8.14.0")
+    implementation("com.bucket4j:bucket4j_jdk17-redisson:8.14.0")
+
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.mockito")
