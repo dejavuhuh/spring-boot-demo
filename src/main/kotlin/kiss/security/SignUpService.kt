@@ -52,7 +52,7 @@ class SignUpService(
 
     @PostMapping
     fun signUp(@RequestBody request: SignUpRequest) {
-        val (accountType, account, verificationCode, password) = request
+        val (accountType, account, verificationCode) = request
 
         val key = "$storeKeyPrefix:$accountType:$account"
         val storedVerificationCode = getStoredVerificationCode(key) ?: throw InvalidVerificationCodeException()

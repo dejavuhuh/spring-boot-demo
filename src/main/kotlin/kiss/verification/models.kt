@@ -2,7 +2,7 @@ package kiss.verification
 
 import org.babyfish.jimmer.error.ErrorFamily
 
-enum class Purpose { SIGN_UP, RESET_PASSWORD }
+enum class Purpose
 enum class ReceiverType { EMAIL, PHONE }
 
 data class VerificationCodeIdentifier(
