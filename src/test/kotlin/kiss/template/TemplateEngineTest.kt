@@ -25,7 +25,12 @@ class TemplateEngineTest {
 
         val context = Context("value1", 2)
         templateEngine
-            .render(templateLocation, context)
+            .render(
+                templateLocation, mapOf(
+                    "var1" to context.var1,
+                    "var2" to context.var2
+                )
+            )
             .shouldBe("${context.var1}, ${context.var2}")
     }
 }

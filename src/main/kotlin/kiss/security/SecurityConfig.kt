@@ -24,7 +24,9 @@ class SecurityConfig {
             csrf { disable() }
             anonymous { disable() }
             authorizeHttpRequests {
+                authorize("/ts.zip", permitAll)
                 authorize("/auth/sign-in", permitAll)
+                authorize("/auth/sign-up", permitAll)
                 authorize("/verification-code/send", permitAll)
                 authorize(anyRequest, authenticated)
             }

@@ -37,19 +37,19 @@ class AuthService(
         verificationCodeStorage.verify(
             VerificationCodeIdentifier(Purpose.SIGN_UP, accountType, account),
             verificationCode
-        )
-
-        // 创建账号
-        try {
-            sql.insert(Account {
-                when (accountType) {
-                    ReceiverType.EMAIL -> email = account
-                    ReceiverType.PHONE -> phone = account
-                }
-                this.password = passwordEncoder.encode(password)
-            })
-        } catch (ex: SaveException.NotUnique) {
-            throw AuthException.accountAlreadyExists(ex.message, ex)
+        ) {
+            // 创建账号
+            try {
+                sql.insert(Account {
+                    when (accountType) {
+                        ReceiverType.EMAIL -> email = account
+                        ReceiverType.PHONE -> phone = account
+                    }
+                    this.password = passwordEncoder.encode(password)
+                })
+            } catch (ex: SaveException.NotUnique) {
+                throw AuthException.accountAlreadyExists(ex.message, ex)
+            }
         }
     }
 

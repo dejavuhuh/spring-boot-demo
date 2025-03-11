@@ -61,7 +61,10 @@ class MailServiceTest {
             to = expectedTo,
             subject = expectedSubject,
             htmlTemplateId = templateId,
-            contextObject = context
+            contextObject = mapOf(
+                "var1" to context.var1,
+                "var2" to context.var2
+            )
         )
 
         val receivedMessages = mailServer.receivedMessages

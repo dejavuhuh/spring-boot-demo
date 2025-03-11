@@ -18,7 +18,7 @@ class VerificationCodeStorage(redissonClient: RedissonClient) {
     }
 
     @Throws(VerificationCodeException::class)
-    fun verify(key: VerificationCodeIdentifier, value: String) {
+    fun verify(key: VerificationCodeIdentifier, value: String, block: () -> Unit) {
         val stored = codeCache[key] ?: throw VerificationCodeException.expired()
         if (stored != value) {
             // 防止暴力破解
@@ -32,6 +32,7 @@ class VerificationCodeStorage(redissonClient: RedissonClient) {
             throw VerificationCodeException.mismatch()
         }
 
+        block()
         codeCache.remove(key)
         attemptCache.remove(key)
     }
