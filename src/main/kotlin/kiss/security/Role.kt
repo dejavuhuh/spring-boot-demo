@@ -10,5 +10,8 @@ interface Role : BaseEntity {
     val name: String
 
     @ManyToMany
+    val children: List<Role>
+
+    @ManyToMany
     val permissions: List<Permission>
 }
