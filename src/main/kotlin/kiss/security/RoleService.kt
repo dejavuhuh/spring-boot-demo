@@ -2,9 +2,10 @@ package kiss.security
 
 import kiss.security.dto.RoleInput
 import kiss.security.dto.RoleSpecification
-import org.babyfish.jimmer.Page
+import org.babyfish.jimmer.client.FetchBy
 import org.babyfish.jimmer.sql.exception.SaveException
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -37,7 +38,19 @@ class RoleService(val sql: KSqlClient) {
     }
 
     @GetMapping
-    fun list(@ModelAttribute specification: RoleSpecification): Page<Role> {
-        TODO()
+    fun list(@ModelAttribute specification: RoleSpecification): List<@FetchBy("ROLE_LIST_VIEW") Role> {
+        return sql.executeQuery(Role::class) {
+            where(specification)
+            select(table.fetch(ROLE_LIST_VIEW))
+        }
+    }
+
+    companion object {
+        val ROLE_LIST_VIEW = newFetcher(Role::class).by {
+            allScalarFields()
+            inheritedRoles {
+                name()
+            }
+        }
     }
 }
