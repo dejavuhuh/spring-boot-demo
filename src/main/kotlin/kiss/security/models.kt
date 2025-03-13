@@ -20,3 +20,8 @@ enum class AuthError {
     ACCOUNT_ALREADY_EXISTS,
     ACCOUNT_OR_PASSWORD_MISMATCH,
 }
+
+@ErrorFamily
+enum class RoleError {
+    ROLE_ALREADY_EXISTS,
+}

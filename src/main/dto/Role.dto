@@ -1,0 +1,11 @@
+export kiss.security.Role
+
+input RoleInput {
+    #allScalars(this)
+
+    id(inheritedRoles) as inheritedRoleIds
+}
+
+specification RoleSpecification {
+    like/i(name, code) as keyword
+}
