@@ -1,6 +1,7 @@
 package kiss.security
 
 import kiss.security.dto.RoleInput
+import kiss.security.dto.RoleSpecification
 import org.babyfish.jimmer.Page
 import org.babyfish.jimmer.sql.exception.SaveException
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -36,7 +37,7 @@ class RoleService(val sql: KSqlClient) {
     }
 
     @GetMapping
-    fun list(): Page<Role> {
+    fun list(@ModelAttribute specification: RoleSpecification): Page<Role> {
         TODO()
     }
 }
