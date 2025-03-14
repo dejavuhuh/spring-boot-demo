@@ -2,7 +2,7 @@ package kiss.ratelimit
 
 import io.mockk.junit5.MockKExtension
 import kiss.TestcontainersConfiguration
-import org.assertj.core.api.Assertions.assertThat
+import kiss.hasStatus
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,25 +23,25 @@ class RateLimitTest @Autowired constructor(val mvc: MockMvcTester) {
 
     @Test
     fun `With @RateLimit`() {
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.OK)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.OK)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.OK)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.TOO_MANY_REQUESTS)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.OK)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.OK)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.OK)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.TOO_MANY_REQUESTS)
         TimeUnit.MILLISECONDS.sleep(500)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.OK)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.OK)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.OK)
-        assertThat(mvc.post().uri("/rate-limit")).hasStatus(HttpStatus.TOO_MANY_REQUESTS)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.OK)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.OK)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.OK)
+        mvc.post().uri("/rate-limit").hasStatus(HttpStatus.TOO_MANY_REQUESTS)
     }
 
     @Test
     fun `With empty @RateLimit`() {
-        assertThat(mvc.post().uri("/with-empty-rate-limit")).hasStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+        mvc.post().uri("/with-empty-rate-limit").hasStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @Test
     fun `Without @RateLimit`() {
-        assertThat(mvc.post().uri("/without-rate-limit")).hasStatus(HttpStatus.OK)
+        mvc.post().uri("/without-rate-limit").hasStatus(HttpStatus.OK)
     }
 }
 

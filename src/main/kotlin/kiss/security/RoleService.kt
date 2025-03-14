@@ -9,16 +9,23 @@ import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping(RoleService.URI)
 class RoleService(val sql: KSqlClient) {
 
     @PostMapping
-    @Throws(RoleException.RoleAlreadyExists::class)
+    @Throws(
+        RoleException.RoleNameAlreadyExists::class,
+        RoleException.RoleCodeAlreadyExists::class,
+    )
     fun createRole(@RequestBody input: RoleInput) {
         try {
             sql.insert(input)
-        } catch (_: SaveException.NotUnique) {
-            throw RoleException.roleAlreadyExists(input.name)
+        } catch (ex: SaveException.NotUnique) {
+            when {
+                ex.isMatched(RoleProps.NAME) -> throw RoleException.roleNameAlreadyExists(input.name)
+                ex.isMatched(RoleProps.CODE) -> throw RoleException.roleCodeAlreadyExists(input.code)
+                else -> throw ex
+            }
         }
     }
 
@@ -28,12 +35,19 @@ class RoleService(val sql: KSqlClient) {
     }
 
     @PutMapping("/{id}")
-    @Throws(RoleException.RoleAlreadyExists::class)
+    @Throws(
+        RoleException.RoleNameAlreadyExists::class,
+        RoleException.RoleCodeAlreadyExists::class,
+    )
     fun updateRole(@PathVariable id: Int, @RequestBody input: RoleInput) {
         try {
             sql.update(input.toEntity { this.id = id })
-        } catch (_: SaveException.NotUnique) {
-            throw RoleException.roleAlreadyExists(input.name)
+        } catch (ex: SaveException.NotUnique) {
+            when {
+                ex.isMatched(RoleProps.NAME) -> throw RoleException.roleNameAlreadyExists(input.name)
+                ex.isMatched(RoleProps.CODE) -> throw RoleException.roleCodeAlreadyExists(input.code)
+                else -> throw ex
+            }
         }
     }
 
@@ -46,6 +60,7 @@ class RoleService(val sql: KSqlClient) {
     }
 
     companion object {
+        const val URI = "/roles"
         val ROLE_LIST_VIEW = newFetcher(Role::class).by {
             allScalarFields()
             inheritedRoles {

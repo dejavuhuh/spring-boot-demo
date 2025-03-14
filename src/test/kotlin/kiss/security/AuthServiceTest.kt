@@ -22,12 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.HttpCookie
 
-@SpringBootTest(
-    webEnvironment = WebEnvironment.RANDOM_PORT,
-    properties = [
-        "spring.sql.init.mode=always"
-    ]
-)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(TestcontainersConfiguration::class)
 class AuthServiceTest @Autowired constructor(val template: TestRestTemplate) {
 

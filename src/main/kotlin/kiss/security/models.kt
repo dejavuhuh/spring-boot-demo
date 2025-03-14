@@ -23,5 +23,6 @@ enum class AuthError {
 
 @ErrorFamily
 enum class RoleError {
-    ROLE_ALREADY_EXISTS,
+    ROLE_NAME_ALREADY_EXISTS,
+    ROLE_CODE_ALREADY_EXISTS,
 }
